@@ -19,7 +19,7 @@ struct StructNestedClass {
     var a = ClassA()
 }
 
-struct ClassNestedStruct {
+class ClassNestedStruct {
     var a = StructA()
 }
 
@@ -52,21 +52,15 @@ class ViewController: UIViewController {
         
         // ex) struct타입을 가지고 있는 class 타입 메모리 주소
         var classNestedStruct = ClassNestedStruct()
-        printMemoryAddress(&classNestedStruct) // 주소: 0x000000016d1c78d0
-        printMemoryAddress(&(classNestedStruct.a)) // 주소: 0x000000016d1c78d0
-        printHeapMemoryAddress(classNestedStruct) // (crash: class인스턴스 값 자체가 heap에 존재하지 않음)
+        printMemoryAddress(&classNestedStruct) // 주소: 0x000000016f8d38c0
+        printMemoryAddress(&(classNestedStruct.a)) // 주소: 0x000000014de94cc0
+        printHeapMemoryAddress(classNestedStruct) // 주소: 0x000000014de94cb0
         printHeapMemoryAddress(classNestedStruct.a) // (crash: a는 struct이므로 heap에 존재 x)
-        printMemoryAddressObject(classNestedStruct) // 주소: 0x000000016d1c78c8
-        printMemoryAddressObject(classNestedStruct.a) // 주소: 0x000000016d1c78c0
     }
 }
 
 func printMemoryAddress<T>(_ o: inout T) {
     withUnsafePointer(to: &o) { print($0) }
-}
-
-func printMemoryAddressObject<T>(_ o: T) {
-    withUnsafePointer(to: o) { print($0) }
 }
 
 func printHeapMemoryAddress<T>(_ o: T) {
